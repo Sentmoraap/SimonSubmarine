@@ -5,8 +5,9 @@ public class IA : MonoBehaviour
 {
     // TODO GD : set AI'S initial appreciation
 
-    #region PrivateAttributes
+#region PrivateAttributes
     private float m_appreciation; // AI's appreciation in [0;1]
+#endregion 
 
     #region MonoBehaviour
     void Start ()

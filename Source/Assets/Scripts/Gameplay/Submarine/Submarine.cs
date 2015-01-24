@@ -2,11 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// TODO : delete this when the real class Romm exists 
-class Room
-{
-
-};
 public class Submarine
 {
     #region publicAttributes
