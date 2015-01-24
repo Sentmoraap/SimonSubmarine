@@ -4,22 +4,40 @@ using System.Collections;
 public abstract class ActionObject : MonoBehaviour
 {
     #region publicAttributes
-    public bool _isActivated;
     public bool _isMovable;
     #endregion
 
+    #region properties
+    public bool IsActivated
+    {
+        get
+        {
+            return m_isActivated;
+        }
+        set
+        {
+            if(value==m_isActivated) return;
+            if(value) activateAction(); else disactivateAction();
+            m_isActivated=value;
+        }
+    }
+    #endregion
+
+    #region privateAttributes
+        bool m_isActivated;
+    #endregion
     
     #region MonoBehaviour
     void Start ()
     {
-	    _isActivated=false;
+	    m_isActivated=false;
         _isMovable=false;
 	}
 	
 	void Update ()
     {
         doCommonStuff();
-        if(_isActivated) doActivatedStuff(); else doDisactivatedStuff();
+        if(m_isActivated) doActivatedStuff(); else doDisactivatedStuff();
     }
     #endregion
 
@@ -27,6 +45,7 @@ public abstract class ActionObject : MonoBehaviour
     protected virtual void doCommonStuff() {}
     protected virtual void doActivatedStuff() {}
     protected virtual void doDisactivatedStuff(){}
-
+    protected virtual void activateAction() { };
+    protected virtual void disactivateAction() {};
     #endregion
 }
