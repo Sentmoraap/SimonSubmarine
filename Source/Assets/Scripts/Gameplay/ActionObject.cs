@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Object : MonoBehaviour
+public abstract class ActionObject : MonoBehaviour
 {
     #region publicAttributes
     public bool _isActivated;
@@ -12,7 +12,7 @@ public abstract class Object : MonoBehaviour
     #region MonoBehaviour
     void Start ()
     {
-	    _isActivated=flase;
+	    _isActivated=false;
         _isMovable=false;
 	}
 	
@@ -24,9 +24,9 @@ public abstract class Object : MonoBehaviour
     #endregion
 
     #region virtualMethods
-    protected virtual void doCommonStuff() {};
-    protected virtual void doActivatedStuff() {};
-    protected virtual void doDisactivatedStuff(){};
+    protected virtual void doCommonStuff() {}
+    protected virtual void doActivatedStuff() {}
+    protected virtual void doDisactivatedStuff(){}
 
     #endregion
 }
