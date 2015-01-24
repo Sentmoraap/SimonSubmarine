@@ -25,6 +25,14 @@ public class Submarine : MonoBehaviour
             return m_unlockedRooms;
         }
     }
+
+    public float TimeLeft
+    {
+        get
+        {
+            return m_startTime + m_timeLimit - Time.time;
+        }
+    }
     #endregion
 
     #region privateAttributes
@@ -46,6 +54,7 @@ public class Submarine : MonoBehaviour
         m_phaseRoomUnlocks.Add(6);
         m_phaseRoomUnlocks.Add(10);
         m_startTime = Time.time;
+        UnlockNextPhase();
     }
 
     public void Update()
@@ -72,6 +81,13 @@ public class Submarine : MonoBehaviour
     {
         m_phase++;
         m_unlockedRooms = m_phaseRoomUnlocks[m_phase];
+        updateRoomDisplays();
+    }
+
+    private void updateRoomDisplays()
+    {
+        for(int i=0;i<_rooms.Count;i++)
+            _rooms[i].IsVisible=i<m_unlockedRooms;
     }
 
     public void AddTime(float seconds)
