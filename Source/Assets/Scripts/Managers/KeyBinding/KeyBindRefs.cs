@@ -14,6 +14,7 @@ public static class KeyBindRefs
             temp.Add(new KeyConfig("Horizontal"), new List<string> { "Horizontal" });
             temp.Add(new KeyConfig("Vertical"), new List<string> { "Vertical" });
             temp.Add(new KeyConfig(KeyCode.Joystick1Button0), new List<string> { "ButtonA" });
+            temp.Add(new KeyConfig(KeyCode.Space), new List<string> { "ButtonA" });
             temp.Add(new KeyConfig(KeyCode.Tab), new List<string> { "KeyBindGUI" });
 
             return temp;

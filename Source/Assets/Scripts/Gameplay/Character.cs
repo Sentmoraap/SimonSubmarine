@@ -91,7 +91,6 @@ public class Character : MonoBehaviour
                 m_objects.Add(aObj);
             }
         }
-
         //return cols.Length > 0;
     }
 
@@ -104,7 +103,6 @@ public class Character : MonoBehaviour
 
     void ActionDown()
     {
-        Debug.Log("ActionDown");
         if(m_objects.Count > 0)
         {
             m_objects[0].activateActionDown();
@@ -113,7 +111,6 @@ public class Character : MonoBehaviour
 
     void ActionUp()
     {
-        Debug.Log("ActionUp");
         if(m_objects.Count > 0)
         {
             m_objects[0].activateActionUp();
