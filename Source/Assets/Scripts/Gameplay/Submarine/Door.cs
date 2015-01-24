@@ -8,7 +8,7 @@ public class Door : ActionObject {
 
     public Room[] _rooms;
     public float _lockDelay;
-
+    public Animator _anim;
 
     private DoorState m_doorState;
     private float m_pressure;
@@ -69,7 +69,7 @@ public class Door : ActionObject {
 
 #region Overrided functions
 
-    protected override void activateActionUp()
+    public override void activateActionUp()
     {
         base.activateActionUp();
 
@@ -77,28 +77,30 @@ public class Door : ActionObject {
         {
             case DoorState.Open:
                 m_doorState = DoorState.Closed;
-                //TODO anim d'ouverture
+                _anim.SetTrigger("Close");
                 break;
 
 
             case DoorState.Closed:
                 m_doorState = DoorState.Open;
-                //TODO play anim considering state
+                _anim.SetTrigger("Open");
                 break;
 
         }
     }
 
-    protected override void activateActionDown()
+    public override void activateActionDown()
     {
         base.activateActionDown();
 
         switch (m_doorState)
         {
             case DoorState.Locked :
+                _anim.SetTrigger("Unlock");
+                break;
             case DoorState.Closed :
+                _anim.SetTrigger("Lock");
                 m_timer.Reset(_lockDelay);
-                //TODO anim de verouillage
                 break;
         }
 

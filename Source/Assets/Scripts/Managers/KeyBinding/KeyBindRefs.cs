@@ -13,7 +13,7 @@ public static class KeyBindRefs
             var temp = new Dictionary<KeyConfig, List<string>>();
             temp.Add(new KeyConfig("Horizontal"), new List<string> { "Horizontal" });
             temp.Add(new KeyConfig("Vertical"), new List<string> { "Vertical" });
-            temp.Add(new KeyConfig(KeyCode.Mouse0), new List<string> { "MouseLeftClick" });
+            temp.Add(new KeyConfig(KeyCode.Joystick1Button0), new List<string> { "ButtonA" });
             temp.Add(new KeyConfig(KeyCode.Tab), new List<string> { "KeyBindGUI" });
 
             return temp;
@@ -27,7 +27,7 @@ public static class KeyBindRefs
             var temp = new Dictionary<string, ActionConfig>();
             temp.Add("Horizontal", new AxisActionConfig(KeyType.Movement, 0, null));
             temp.Add("Vertical", new AxisActionConfig(KeyType.Movement, 0, null));
-            temp.Add("MouseLeftClick", new KeyActionConfig(KeyType.Action, 0, null, null));
+            temp.Add("ButtonA", new KeyActionConfig(KeyType.Action, 0, null, null));
             temp.Add("KeyBindGUI", new KeyActionConfig(KeyType.Menu, 0, null, null));
 
             return temp;

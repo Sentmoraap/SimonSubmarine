@@ -7,9 +7,10 @@ public class Character : MonoBehaviour
 
 #region members
 
-	private int m_currentLifePoint;
+    public float _actionOffset;
+    public float _actionRange = 3;
 
-    private float m_actionRange = 3;
+	private int m_currentLifePoint;
 
     private float m_moveSpeed = 0.25f;
     private float m_horizontalValue;
@@ -45,10 +46,11 @@ public class Character : MonoBehaviour
 
     void Start()
 	{
+        m_objects = new List<ActionObject>();
 
 		KeyBinder.Instance.DefineActions("Horizontal", new AxisActionConfig(KeyType.Movement, 0, value => { HorizontalValue = value; } ));
 		KeyBinder.Instance.DefineActions("Vertical", new AxisActionConfig(KeyType.Movement, 0, value => { VerticalValue = value; } ));
-
+        KeyBinder.Instance.DefineActions("ButtonA", new KeyActionConfig(KeyType.Action, 0, ActionDown, ActionUp));
 	}
 
 	void Update()
@@ -77,6 +79,21 @@ public class Character : MonoBehaviour
     public void UpdateCloseActionObject()
     {
         //TODO add closed actionobject to the list to be able to interact with use sphere collision to detect and getcomponent<ActionObject>
+
+        m_objects.Clear();
+        Collider[] cols = Physics.OverlapSphere(transform.position + transform.right * _actionOffset, _actionRange, ~(1 << LayerMask.NameToLayer("Player")));
+        
+        foreach(Collider col in cols)
+        {
+            ActionObject aObj = col.GetComponent<ActionObject>();
+            if(aObj != null )
+            {
+                m_objects.Add(aObj);
+            }
+        }
+
+        Debug.Log(m_objects.Count);
+        //return cols.Length > 0;
     }
 
 	void ApplyMove(float moveSpeed)
@@ -86,6 +103,31 @@ public class Character : MonoBehaviour
 		transform.rotation = Quaternion.Euler(new Vector3(0f, (Mathf.Atan2(-VerticalValue, HorizontalValue) * 180 / Mathf.PI), 0f));
     }
 
+    void ActionDown()
+    {
+        Debug.Log("ActionDown");
+        if(m_objects.Count > 0)
+        {
+            m_objects[0].activateActionDown();
+        }
+    }
+
+    void ActionUp()
+    {
+        Debug.Log("ActionUp");
+        if(m_objects.Count > 0)
+        {
+            m_objects[0].activateActionUp();
+        }
+    }
+
 #endregion
+
+    public virtual void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+
+        Gizmos.DrawWireSphere(transform.position + transform.right * _actionOffset, _actionRange);
+    }
 
 }
