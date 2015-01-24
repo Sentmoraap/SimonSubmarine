@@ -62,10 +62,9 @@ public class Room : MonoBehaviour
 	
 	void Update ()
     {
-        //TODO each of them might be update only considering a certain state of the room
-        UpdateHealth();
         UpdateWaterValue();
         UpdateHeatValue();
+        UpdateHealth();
 	}
 
 #endregion 
