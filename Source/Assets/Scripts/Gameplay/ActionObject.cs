@@ -45,7 +45,7 @@ public abstract class ActionObject : MonoBehaviour
     protected virtual void doCommonStuff() {}
     protected virtual void doActivatedStuff() {}
     protected virtual void doDisactivatedStuff(){}
-    protected virtual void activateAction() { };
-    protected virtual void disactivateAction() {};
+    protected virtual void activateAction() { }
+    protected virtual void disactivateAction() {}
     #endregion
 }
