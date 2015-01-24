@@ -99,6 +99,7 @@ public class Character : MonoBehaviour
         var direction = new Vector3(HorizontalValue, 0f, VerticalValue).normalized;
 		transform.position += direction * moveSpeed;
 		transform.rotation = Quaternion.Euler(new Vector3(0f, (Mathf.Atan2(-VerticalValue, HorizontalValue) * 180 / Mathf.PI), 0f));
+        rigidbody.angularVelocity = Vector3.zero;
     }
 
     void ActionDown()
@@ -113,6 +114,7 @@ public class Character : MonoBehaviour
     {
         if(m_objects.Count > 0)
         {
+            m_objects[0].IsActivated = m_objects[0].IsActivated ? false : true;
             m_objects[0].activateActionUp();
         }
     }
