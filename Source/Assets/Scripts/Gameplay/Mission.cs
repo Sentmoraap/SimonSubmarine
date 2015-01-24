@@ -8,17 +8,22 @@ public class Mission : MonoBehaviour
     // TODO : define generic cases and handle them
     public enum ResultType
     {
-        SPECIAL
+        TIME_BONUS,SPECIAL
     }
     
-    public class ResultParams
+    public class Params
     {
+    }
+
+    public class FloatParam : Params
+    {
+        public float value;
     }
 
     public struct Result
     {
         public ResultType type;
-        public ResultParams parameters;
+        public Params parameters;
     }
 
     // TODO : define generic conditons and handle them
@@ -27,14 +32,10 @@ public class Mission : MonoBehaviour
         SPECIAL
     }
 
-    public class CompleteConditionParams
-    {
-    }
-
     public struct CompleteCondition
     {
         public CompleteConditionType type;
-        public CompleteConditionParams parameters;
+        public Params parameters;
     }
     #endregion
 
@@ -47,7 +48,9 @@ public class Mission : MonoBehaviour
     private bool m_finished = false;
     private List<Result> m_positiveResults;
     private List<Result> m_negativeResults;
+    private List<Result> m_denyResults;
     private List<CompleteCondition> m_completeConditions;
+    private Submarine m_submarine;
     #endregion
 
     #region MonoBehaviour
@@ -56,6 +59,7 @@ public class Mission : MonoBehaviour
         m_startTime = Time.time;
         m_positiveResults = new List<Result>();
         m_negativeResults = new List<Result>();
+        m_denyResults = new List<Result>();
         m_completeConditions = new List<CompleteCondition>();
     }
 
@@ -78,6 +82,40 @@ public class Mission : MonoBehaviour
     #endregion
 
     #region publicMethods
+    public void setDefaultGoodMission()
+    {
+        Result pos;
+        pos.type=ResultType.TIME_BONUS;
+        FloatParam fp=new FloatParam();
+        fp.value=20;
+        pos.parameters=fp;
+        m_positiveResults.Add(pos);
+
+        Result neg;
+        neg.type=ResultType.TIME_BONUS;
+        fp=new FloatParam();
+        fp.value=-20;
+        neg.parameters=fp;
+        m_negativeResults.Add(neg);
+    }
+
+    public void setDefaultBadMission()
+    {
+        Result pos;
+        pos.type=ResultType.TIME_BONUS;
+        FloatParam fp=new FloatParam();
+        fp.value=-10;
+        pos.parameters=fp;
+        m_positiveResults.Add(pos);
+        
+        Result den;
+        den.type=ResultType.TIME_BONUS;
+        fp=new FloatParam();
+        fp.value=10;
+        den.parameters=fp;
+        m_denyResults.Add(den);
+    }
+
     public float getTimeLeft()
     {
         if (m_startTime == -1) return -1;
@@ -94,7 +132,7 @@ public class Mission : MonoBehaviour
         if(!m_finished)
         {
             m_finished = true;
-            applyNegativeResults();
+            applyDenyResults();
         }
     }
     #endregion
@@ -109,6 +147,10 @@ public class Mission : MonoBehaviour
     {
         applyResults(m_positiveResults);
     }
+    private void applyDenyResults()
+    {
+        applyResults(m_denyResults);
+    }
 
     private void applyResults(List<Result> results)
     {
@@ -116,6 +158,10 @@ public class Mission : MonoBehaviour
         {
             switch(r.type)
             {
+                case ResultType.TIME_BONUS:
+                    FloatParam param = (FloatParam)r.parameters;
+                    m_submarine.AddTime(param.value);
+                    break;
                 case ResultType.SPECIAL:
                     applySpecialResult(r.parameters);
                     break;
@@ -147,7 +193,7 @@ public class Mission : MonoBehaviour
 
     // Methods to override for special cases
     #region virtualMethods 
-    protected virtual bool checkSpecialConditions(CompleteConditionParams parameters) {return false;}
-    protected virtual void applySpecialResult(ResultParams parameters) {}
+    protected virtual bool checkSpecialConditions(Params parameters) {return false;}
+    protected virtual void applySpecialResult(Params parameters) {}
     #endregion
 }
