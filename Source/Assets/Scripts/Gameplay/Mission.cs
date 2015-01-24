@@ -77,7 +77,7 @@ public class Mission : MonoBehaviour
     #endregion
 
     #region publicMethods
-    public void start()
+    public void Start()
     {
         m_startTime = Time.time;
     }
@@ -91,6 +91,15 @@ public class Mission : MonoBehaviour
     public bool isEllapsed()
     {
         return m_startTime!=-1 && Time.time > m_startTime + _timing;
+    }
+
+    public bool Deny()
+    {
+        if(!m_finished)
+        {
+            m_finished = true;
+            applyNegativeResults();
+        }
     }
     #endregion
 
