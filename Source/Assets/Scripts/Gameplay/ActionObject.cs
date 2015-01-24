@@ -28,13 +28,13 @@ public abstract class ActionObject : MonoBehaviour
     #endregion
     
     #region MonoBehaviour
-    void Start ()
+    public virtual void Start ()
     {
 	    m_isActivated=false;
         _isMovable=false;
 	}
-	
-	void Update ()
+
+    public virtual void Update()
     {
         doCommonStuff();
         if(m_isActivated) doActivatedStuff(); else doDisactivatedStuff();
@@ -42,10 +42,40 @@ public abstract class ActionObject : MonoBehaviour
     #endregion
 
     #region virtualMethods
+
+    /// <summary>
+    /// Called each update
+    /// </summary>
     protected virtual void doCommonStuff() {}
+
+    /// <summary>
+    /// Called each update if the object is activated
+    /// </summary>
     protected virtual void doActivatedStuff() {}
+
+    /// <summary>
+    /// Called each update if the object is disactivated
+    /// </summary>
     protected virtual void doDisactivatedStuff(){}
+
+    /// <summary>
+    /// Called one time when activating the object
+    /// </summary>
     protected virtual void activateAction() { }
+
+    /// <summary>
+    /// Called one time when activating button is down the object
+    /// </summary>
+    protected virtual void activateActionDown() { }
+
+    /// <summary>
+    /// Called one time when activating button is up the object
+    /// </summary>
+    protected virtual void activateActionUp() { }
+
+    /// <summary>
+    /// Called one time when disactivating the object
+    /// </summary>
     protected virtual void disactivateAction() {}
     #endregion
 }
