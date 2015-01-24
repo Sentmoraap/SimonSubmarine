@@ -2,13 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Mission : MonoBehaviour
+public class Mission
 {
     #region publicTypes
     // TODO : define generic cases and handle them
     public enum ResultType
     {
-        TIME_BONUS,SPECIAL
+        TIME_BONUS,
+        IA_BONUS,
+        SPECIAL
     }
     
     public class Params
@@ -26,15 +28,11 @@ public class Mission : MonoBehaviour
         public Params parameters;
     }
 
-    // TODO : define generic conditons and handle them
-    public enum CompleteConditionType
-    {
-        SPECIAL
-    }
-
     public struct CompleteCondition
     {
-        public CompleteConditionType type;
+        public bool _useObject;
+        public string _object;
+        public string _room;
         public Params parameters;
     }
     #endregion
@@ -46,24 +44,37 @@ public class Mission : MonoBehaviour
     #region privateAttributes
     private float m_startTime=-1;
     private bool m_finished = false;
+    private bool m_completed = false;
     private List<Result> m_positiveResults;
     private List<Result> m_negativeResults;
     private List<Result> m_denyResults;
-    private List<CompleteCondition> m_completeConditions;
+    private CompleteCondition m_completeCondition;
     private Submarine m_submarine;
     #endregion
 
     #region MonoBehaviour
-    public virtual void Start()
+    public Mission(string obj, string room)
     {
         m_startTime = Time.time;
         m_positiveResults = new List<Result>();
         m_negativeResults = new List<Result>();
         m_denyResults = new List<Result>();
-        m_completeConditions = new List<CompleteCondition>();
+        m_completeCondition._useObject = true;
+        m_completeCondition._object = obj;
+        m_completeCondition._room = room;
     }
 
-    public virtual void Update()
+    public Mission(string obj)
+    {
+        m_startTime = Time.time;
+        m_positiveResults = new List<Result>();
+        m_negativeResults = new List<Result>();
+        m_denyResults = new List<Result>();
+        m_completeCondition._useObject = false;
+        m_completeCondition._object = obj;
+    }
+
+    public void UpdateMission()
     {
         if(!m_finished)
         {
@@ -72,7 +83,7 @@ public class Mission : MonoBehaviour
                 m_finished = true;
                 applyNegativeResults();
             }
-            else if(checkIfCompleted())
+            else if(m_completed)
             {
                 m_finished = true;
                 applyPositiveResults();
@@ -162,6 +173,10 @@ public class Mission : MonoBehaviour
                     FloatParam param = (FloatParam)r.parameters;
                     m_submarine.AddTime(param.value);
                     break;
+                case ResultType.IA_BONUS :
+                    FloatParam fparam = (FloatParam)r.parameters;
+                    IA.Instance.ModifyAppreciation(fparam.value);
+                    break;
                 case ResultType.SPECIAL:
                     applySpecialResult(r.parameters);
                     break;
@@ -172,22 +187,20 @@ public class Mission : MonoBehaviour
         }
     }
 
-    private bool checkIfCompleted()
+    public void checkIfCompleted(string objName, string room)
     {
-        bool ret = true;
-        foreach(CompleteCondition c in m_completeConditions)
+        if (!m_completeCondition._useObject && m_completeCondition._object == objName && m_completeCondition._room == room)
         {
-            switch(c.type)
-            {
-                case CompleteConditionType.SPECIAL:
-                    ret &= checkSpecialConditions(c.parameters);
-                    break;
-                default:
-                    Debug.LogError("Unhandled mission condition type");
-                    break;
-            }
+            m_completed = true;
         }
-        return ret;
+    }
+
+    public void checkIfCompleted(string objName)
+    {
+        if (m_completeCondition._useObject && m_completeCondition._object == objName)
+        {
+            m_completed = true;
+        }
     }
     #endregion
 

@@ -21,6 +21,8 @@ public abstract class ActionObject : MonoBehaviour
             m_isActivated=value;
         }
     }
+
+
     #endregion
 
     #region privateAttributes
@@ -39,6 +41,15 @@ public abstract class ActionObject : MonoBehaviour
         doCommonStuff();
         if(m_isActivated) doActivatedStuff(); else doDisactivatedStuff();
     }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Room"))
+        {
+            IA.Instance._currMission.checkIfCompleted(name, other.name);
+        }
+    }
+
     #endregion
 
     #region virtualMethods
@@ -61,12 +72,24 @@ public abstract class ActionObject : MonoBehaviour
     /// <summary>
     /// Called one time when activating the object
     /// </summary>
-    protected virtual void activateAction() { }
+    protected virtual void activateAction()
+    {
+        if (IA.Instance._currMission != null)
+        {
+            IA.Instance._currMission.checkIfCompleted(name);
+        }
+    }
 
     /// <summary>
     /// Called one time when activating button is down the object
     /// </summary>
-    public virtual void activateActionDown() { }
+    public virtual void activateActionDown()
+    {
+        if(IA.Instance._currMission != null)
+        {
+            IA.Instance._currMission.checkIfCompleted(name);
+        }
+    }
 
     /// <summary>
     /// Called one time when activating button is up the object
@@ -76,6 +99,6 @@ public abstract class ActionObject : MonoBehaviour
     /// <summary>
     /// Called one time when disactivating the object
     /// </summary>
-    protected virtual void disactivateAction() {}
+    protected virtual void disactivateAction() { }
     #endregion
 }
