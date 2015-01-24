@@ -11,8 +11,8 @@ public class Door : ActionObject {
     public Animator _anim;
 
     private DoorState m_doorState;
-    private float m_pressure;
-    private float m_leak;
+    private float m_pressure=1;
+    private float m_leak=0.1f;   // Water leak in (unity unit)²*(watervalue unit)/seconds
 
     private Timer m_timer;
     private bool m_isLocking;

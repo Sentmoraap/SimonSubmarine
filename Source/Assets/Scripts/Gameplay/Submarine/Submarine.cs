@@ -25,6 +25,14 @@ public class Submarine : MonoBehaviour
             return m_unlockedRooms;
         }
     }
+
+    public float TimeLeft
+    {
+        get
+        {
+            return m_startTime + m_timeLimit - Time.time;
+        }
+    }
     #endregion
 
     #region privateAttributes

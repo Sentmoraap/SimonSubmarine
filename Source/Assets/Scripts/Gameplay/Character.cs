@@ -92,7 +92,6 @@ public class Character : MonoBehaviour
             }
         }
 
-        Debug.Log(m_objects.Count);
         //return cols.Length > 0;
     }
 
