@@ -53,6 +53,7 @@ public class Mission : MonoBehaviour
     #region MonoBehaviour
     public virtual void Start()
     {
+        m_startTime = Time.time;
         m_positiveResults = new List<Result>();
         m_negativeResults = new List<Result>();
         m_completeConditions = new List<CompleteCondition>();
@@ -77,11 +78,6 @@ public class Mission : MonoBehaviour
     #endregion
 
     #region publicMethods
-    public void Start()
-    {
-        m_startTime = Time.time;
-    }
-
     public float getTimeLeft()
     {
         if (m_startTime == -1) return -1;
@@ -93,7 +89,7 @@ public class Mission : MonoBehaviour
         return m_startTime!=-1 && Time.time > m_startTime + _timing;
     }
 
-    public bool Deny()
+    public void Deny()
     {
         if(!m_finished)
         {
