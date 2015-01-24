@@ -8,7 +8,7 @@ public class Door : ActionObject {
 
     public Room[] _rooms;
     public float _lockDelay;
-
+    public Animator _anim;
 
     private DoorState m_doorState;
     private float m_pressure;
@@ -16,6 +16,7 @@ public class Door : ActionObject {
 
     private Timer m_timer;
     private bool m_isLocking;
+    private bool m_ignoreUp;
 
 #endregion
 
@@ -39,6 +40,7 @@ public class Door : ActionObject {
         DoorState = DoorState.Locked;
         m_timer = new Timer();
         m_isLocking = false;
+        m_ignoreUp = false;
     }
 
     public override void Update()
@@ -52,7 +54,9 @@ public class Door : ActionObject {
 
         if((m_doorState == DoorState.Closed || m_doorState == DoorState.Locked) && m_isLocking && m_timer.IsElapsedLoop)
         {
-            m_doorState = m_doorState == DoorState.Locked ? DoorState.Open : DoorState.Locked ;
+            m_doorState = m_doorState == DoorState.Locked ? DoorState.Closed : DoorState.Locked ;
+            m_isLocking = false;
+            m_ignoreUp = true;
         }
     }
 
@@ -69,36 +73,58 @@ public class Door : ActionObject {
 
 #region Overrided functions
 
-    protected override void activateActionUp()
+    public override void activateActionUp()
     {
+        if(m_ignoreUp)
+        {
+            m_ignoreUp = false;
+            return;
+        }
+
+
+        Debug.Log(m_doorState);
+
         base.activateActionUp();
 
         switch (m_doorState)
         {
             case DoorState.Open:
                 m_doorState = DoorState.Closed;
-                //TODO anim d'ouverture
+                Debug.Log(name + "close");
+                _anim.SetTrigger("Close");
+                m_isLocking = false;
                 break;
 
 
             case DoorState.Closed:
                 m_doorState = DoorState.Open;
-                //TODO play anim considering state
+                Debug.Log(name + "open");
+                _anim.SetTrigger("Open");
                 break;
 
         }
     }
 
-    protected override void activateActionDown()
+    public override void activateActionDown()
     {
         base.activateActionDown();
 
+        Debug.Log(m_doorState);
+
         switch (m_doorState)
         {
-            case DoorState.Locked :
-            case DoorState.Closed :
+
+            case DoorState.Closed:
+                _anim.SetTrigger("Lock");
+                Debug.Log(name + "lock");
                 m_timer.Reset(_lockDelay);
-                //TODO anim de verouillage
+                m_isLocking = true;
+                break;
+
+            case DoorState.Locked :
+                Debug.Log(name + "unlock");
+                _anim.SetTrigger("Unlock");
+                m_isLocking = true;
                 break;
         }
 

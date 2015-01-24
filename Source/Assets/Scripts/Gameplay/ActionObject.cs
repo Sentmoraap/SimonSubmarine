@@ -66,12 +66,12 @@ public abstract class ActionObject : MonoBehaviour
     /// <summary>
     /// Called one time when activating button is down the object
     /// </summary>
-    protected virtual void activateActionDown() { }
+    public virtual void activateActionDown() { }
 
     /// <summary>
     /// Called one time when activating button is up the object
     /// </summary>
-    protected virtual void activateActionUp() { }
+    public virtual void activateActionUp() { }
 
     /// <summary>
     /// Called one time when disactivating the object
