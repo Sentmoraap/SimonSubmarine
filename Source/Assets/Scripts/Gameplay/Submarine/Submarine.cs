@@ -39,6 +39,7 @@ public class Submarine
     public Submarine()
     {
         m_phaseRoomUnlocks=new List<int>();
+        m_phaseRoomUnlocks.Add(0);
         m_phaseRoomUnlocks.Add(3);
         m_phaseRoomUnlocks.Add(6);
         m_phaseRoomUnlocks.Add(10);
