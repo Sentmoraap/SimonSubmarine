@@ -16,7 +16,6 @@ public class Room : MonoBehaviour
     public List<Door> _doors;
     public float _area; // _area in unity unit²
     private float m_health;
-    //private List<Object> m_objects;
     
     public/*private*/ float m_waterValue=0; // in [0;1]
     private float m_heatValue=0; // in [0;1]
