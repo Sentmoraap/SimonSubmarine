@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
 
     public float _actionOffset;
     public float _actionRange = 3;
+    public Animator _anim;
 
 	private int m_currentLifePoint;
 
@@ -61,9 +62,14 @@ public class Character : MonoBehaviour
     void FixedUpdate()
     {
         UpdateMoveSpeed();
-        if(HorizontalValue != 0f || VerticalValue != 0f)
+        if (HorizontalValue != 0f || VerticalValue != 0f)
         {
+            _anim.SetBool("Walk", true);
             ApplyMove(MoveSpeed);
+        }
+        else
+        {
+            _anim.SetBool("Walk", false);
         }
     }
 
