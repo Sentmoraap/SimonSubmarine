@@ -6,7 +6,7 @@ public class Room : MonoBehaviour
 {
 
 #region constants
-    private const float ROOM_LOW_LEVEL = 0.4f;
+    private const float ROOM_LOW_LEVEL = 0.49f;
     private const float ROOM_HIGH_LEVEL = 4.8f;
 #endregion
 
@@ -74,7 +74,7 @@ public class Room : MonoBehaviour
 
     private void UpdateHealth()
     {
-        //TODO Update room health considering water and heat value
+        m_health = (1 - m_waterValue) * (1 - m_heatValue);
     }
 
     private void UpdateWaterValue()
@@ -84,65 +84,71 @@ public class Room : MonoBehaviour
         {
             Room otherRoom=d._rooms[0];
             if(otherRoom==this) otherRoom=d._rooms[1];
-            switch(d.DoorState)
-            {
-                case DoorState.Open:
-                    {
-                        float otherValue = otherRoom.m_waterValue;
-                        float otherArea = otherRoom._area;
-                        float meanValue = (m_waterValue * _area + otherValue * otherArea) / (_area + otherArea);
-                        m_waterValue = meanValue;
-                        otherRoom.m_waterValue = meanValue;
-                    }
-                    break;
-                case DoorState.Closed:
-                    {
-                        float otherValue = otherRoom.m_waterValue;
-                        float otherArea = otherRoom._area;
-                        int redoTimes = 4;
-                        bool mustRedo = false;
-                        float diffTime = d.Leak * Time.deltaTime / 2;
-                        do // Repeat multiple times to adjust in case there is too many water moved
-                        {
-                            mustRedo = false;
-                            redoTimes--;
-                            if (otherValue > m_waterValue)
-                            {
-                                //if (diffTime / _area + m_waterValue > 1) diffTime = (1 - m_waterValue) * _area;
-                                //if (otherValue - diffTime / otherArea < 0) diffTime = otherValue * otherArea;
-                                m_waterValue += diffTime / _area;
-                                otherValue -= diffTime / otherArea;
-                                //if (m_waterValue > otherValue) mustRedo = true;
-                            }
-                            else
-                            {
-                                //if (diffTime / otherArea + otherValue > 1) diffTime = (1 - otherValue) * otherArea;
-                                //if (m_waterValue - diffTime / _area < 0) diffTime = m_waterValue * _area;
-                                m_waterValue -= diffTime / _area;
-                                otherValue += diffTime / otherArea;
-                                //if (m_waterValue < otherValue) mustRedo = true;
-                            }
-                            diffTime /= 2;
-                        } while (mustRedo && redoTimes > 0);
-                        otherRoom.m_waterValue = otherValue;
-                        Debug.Log(m_waterValue);
-                    }
-                    break;
-                case DoorState.Locked:
-                    break;
-                default:
-                    Debug.LogError("Unhandled DoorState");
-                    break;
-            }
-            Vector3 planePos=m_waterPlane.position;
-            planePos.y = Mathf.Lerp(ROOM_LOW_LEVEL, ROOM_HIGH_LEVEL, m_waterValue);
-            m_waterPlane.position = planePos;
+            propagate(d.DoorState, ref m_waterValue, ref otherRoom.m_waterValue, otherRoom._area, d.Leak);
+            
         }
+        Vector3 planePos=m_waterPlane.position;
+        planePos.y = Mathf.Lerp(ROOM_LOW_LEVEL, ROOM_HIGH_LEVEL, m_waterValue);
+        m_waterPlane.position = planePos;
     }
 
     private void UpdateHeatValue()
     {
-        //TODO Update Heat value considering Heat propagation
+        foreach(Door d in _doors)
+        {
+            Room otherRoom=d._rooms[0];
+            if(otherRoom==this) otherRoom=d._rooms[1];
+            propagate(d.DoorState, ref m_heatValue, ref otherRoom.m_heatValue, otherRoom._area, d.Pressure);
+        }
+        //TODO : graphic effect
+    }
+
+    private void propagate(DoorState doorState, ref float ownValue, ref float otherValue, float otherArea, float leak)
+    {
+        switch(doorState)
+        {
+            case DoorState.Open:
+                {
+                    float meanValue = (ownValue * _area + otherValue * otherArea) / (_area + otherArea);
+                    ownValue = meanValue;
+                    otherValue = meanValue;
+                }
+                break;
+            case DoorState.Closed:
+                {
+                    int redoTimes = 4;
+                    bool mustRedo = false;
+                    float diffTime = leak * Time.deltaTime / 2;
+                    do // Repeat multiple times to adjust in case there is too many water moved
+                    {
+                        mustRedo = false;
+                        redoTimes--;
+                        if (otherValue > ownValue)
+                        {
+                            if (diffTime / _area + ownValue > 1) diffTime = (1 - ownValue) * _area;
+                            if (otherValue - diffTime / otherArea < 0) diffTime = otherValue * otherArea;
+                            ownValue += diffTime / _area;
+                            ownValue -= diffTime / otherArea;
+                            if (ownValue > otherValue) mustRedo = true;
+                        }
+                        else
+                        {
+                            if (diffTime / otherArea + otherValue > 1) diffTime = (1 - otherValue) * otherArea;
+                            if (ownValue - diffTime / _area < 0) diffTime = ownValue * _area;
+                            ownValue -= diffTime / _area;
+                            otherValue += diffTime / otherArea;
+                            if (ownValue < otherValue) mustRedo = true;
+                        }
+                        diffTime /= 2;
+                    } while (mustRedo && redoTimes > 0);
+                }
+                break;
+            case DoorState.Locked:
+                break;
+            default:
+                Debug.LogError("Unhandled DoorState");
+                break;
+        }
     }
 
 #endregion
