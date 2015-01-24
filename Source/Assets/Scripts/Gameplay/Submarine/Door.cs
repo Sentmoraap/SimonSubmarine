@@ -37,7 +37,7 @@ public class Door : ActionObject {
     {
         base.Start();
 
-        DoorState = DoorState.Locked;
+        DoorState = DoorState.Unreachable;
         m_timer = new Timer();
         m_isLocking = false;
         m_ignoreUp = false;
@@ -138,5 +138,6 @@ public enum DoorState
 {
     Open,
     Closed,
-    Locked
+    Locked,
+    Unreachable
 }

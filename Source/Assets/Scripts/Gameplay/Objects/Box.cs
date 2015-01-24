@@ -3,13 +3,23 @@ using System.Collections;
 
 public class Box : ActionObject {
 
-	void Start ()
+
+    protected override void activateAction()
     {
-	    
-	}
-	
-	void Update ()
+        base.activateAction();
+
+        if(transform.parent == null)
+        {
+            transform.parent = GameObject.Find("Character").transform;
+            rigidbody.isKinematic = true;
+        }
+    }
+
+    protected override void disactivateAction()
     {
-	
-	}
+        base.disactivateAction();
+
+        transform.parent = null;
+        rigidbody.isKinematic = false;
+    }
 }
