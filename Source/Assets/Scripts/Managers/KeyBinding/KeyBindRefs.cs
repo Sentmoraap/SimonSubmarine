@@ -11,10 +11,10 @@ public static class KeyBindRefs
         get
         {
             var temp = new Dictionary<KeyConfig, List<string>>();
+            temp.Add(new KeyConfig("Horizontal"), new List<string> { "Horizontal" });
+            temp.Add(new KeyConfig("Vertical"), new List<string> { "Vertical" });
             temp.Add(new KeyConfig(KeyCode.Mouse0), new List<string> { "MouseLeftClick" });
             temp.Add(new KeyConfig(KeyCode.Tab), new List<string> { "KeyBindGUI" });
-            temp.Add(new KeyConfig("Steering"), new List<string> { "Steering" });
-            temp.Add(new KeyConfig("Brake"), new List<string> { "Brake" });
 
             return temp;
         }
@@ -25,10 +25,10 @@ public static class KeyBindRefs
         get
         {
             var temp = new Dictionary<string, ActionConfig>();
+            temp.Add("Horizontal", new AxisActionConfig(KeyType.Movement, 0, null));
+            temp.Add("Vertical", new AxisActionConfig(KeyType.Movement, 0, null));
             temp.Add("MouseLeftClick", new KeyActionConfig(KeyType.Action, 0, null, null));
             temp.Add("KeyBindGUI", new KeyActionConfig(KeyType.Menu, 0, null, null));
-            temp.Add("Steering", new AxisActionConfig(KeyType.Movement, 0, null));
-            temp.Add("Brake", new AxisActionConfig(KeyType.Movement, 0, null));
 
             return temp;
         }
