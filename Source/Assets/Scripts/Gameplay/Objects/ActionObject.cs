@@ -33,7 +33,7 @@ public abstract class ActionObject : MonoBehaviour
     public virtual void Start ()
     {
 	    m_isActivated=false;
-        _isMovable=false;
+        //_isMovable=false;
 	}
 
     public virtual void Update()

@@ -15,7 +15,7 @@ public class Character : MonoBehaviour
 
     private float m_moveSpeed = 0.25f;
     private float m_horizontalValue;
-	private float _verticalValue;
+	private float m_verticalValue;
 
     private List<ActionObject> m_objects;
 
@@ -37,8 +37,8 @@ public class Character : MonoBehaviour
 
 	public float VerticalValue
 	{ 
-		get{return _verticalValue;}
-		set { _verticalValue = value; }
+		get{return m_verticalValue;}
+		set { m_verticalValue = value; }
 	}
 
 #endregion
@@ -120,6 +120,11 @@ public class Character : MonoBehaviour
     {
         if(m_objects.Count > 0)
         {
+            if(m_objects[0]._isMovable)
+            {
+                _anim.SetBool("Carry", m_objects[0].IsActivated ? false : true);
+            }
+
             m_objects[0].IsActivated = m_objects[0].IsActivated ? false : true;
             m_objects[0].activateActionUp();
         }
