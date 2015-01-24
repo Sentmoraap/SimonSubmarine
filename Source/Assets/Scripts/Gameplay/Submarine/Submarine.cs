@@ -50,10 +50,11 @@ public class Submarine : MonoBehaviour
     {
         m_phaseRoomUnlocks=new List<int>();
         m_phaseRoomUnlocks.Add(0);
-        m_phaseRoomUnlocks.Add(3);
+        m_phaseRoomUnlocks.Add(4);
         m_phaseRoomUnlocks.Add(6);
         m_phaseRoomUnlocks.Add(10);
         m_startTime = Time.time;
+        for (int i = 0; i < _rooms.Count; i++) _rooms[i]._id = i;
         UnlockNextPhase();
     }
 
@@ -82,12 +83,24 @@ public class Submarine : MonoBehaviour
         m_phase++;
         m_unlockedRooms = m_phaseRoomUnlocks[m_phase];
         updateRoomDisplays();
+        updateDoorLocks();
     }
 
     private void updateRoomDisplays()
     {
         for(int i=0;i<_rooms.Count;i++)
             _rooms[i].IsVisible=i<m_unlockedRooms;
+    }
+
+    private void updateDoorLocks()
+    {
+        foreach(Room r in _rooms)
+            foreach(Door d in r._doors)
+            {
+                bool unreachable = d._rooms[0]._id>=m_unlockedRooms || d._rooms[1]._id>=m_unlockedRooms;
+                if (unreachable) d.DoorState = DoorState.Unreachable;
+                if (!unreachable && d.DoorState == DoorState.Unreachable) d.DoorState = DoorState.Locked;
+            }
     }
 
     public void AddTime(float seconds)

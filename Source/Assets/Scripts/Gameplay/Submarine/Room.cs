@@ -13,11 +13,12 @@ public class Room : MonoBehaviour
 #region members
 
     public int _floor;
+    public int _id;
     public List<Door> _doors;
     public float _area; // _area in unity unit²
     private float m_health;
     
-    public/*private*/ float m_waterValue=0; // in [0;1]
+    private float m_waterValue=0; // in [0;1]
     private float m_heatValue=0; // in [0;1]
 
     private Transform m_waterPlane;
@@ -142,6 +143,7 @@ public class Room : MonoBehaviour
                 }
                 break;
             case DoorState.Locked:
+            case DoorState.Unreachable:
                 break;
             default:
                 Debug.LogError("Unhandled DoorState");

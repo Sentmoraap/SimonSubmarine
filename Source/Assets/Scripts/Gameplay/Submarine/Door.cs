@@ -37,7 +37,7 @@ public class Door : ActionObject {
     {
         base.Start();
 
-        DoorState = DoorState.Unreachable;
+        DoorState = DoorState.Locked;
         m_timer = new Timer();
         m_isLocking = false;
         m_ignoreUp = false;
