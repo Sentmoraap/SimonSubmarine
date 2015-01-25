@@ -91,7 +91,6 @@ public class IA : MonoBehaviour
 	
 	void Update ()
     {
-        Debug.Log(m_appreciation);
         _currMission.UpdateMission();
 
         //if (Input.GetKeyUp(KeyCode.Return))
