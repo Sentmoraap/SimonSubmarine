@@ -61,7 +61,7 @@ public class IA : MonoBehaviour
         //    "Ahoy there, matey, I'm t' Captain Simon. This is my submarine and from now on, you have t' obey me ! First mission, take that ladder and open t' air lock ! Yaarg !"));
         m_missions.Add(new Mission("Pump",0,
             "Okay. Now, time t' use your tiny arms. Go start t' water pump ! You'll need it t' evacuate t' water on t' floor."));
-        m_missions.Add(new Mission("Movie",0,"Focus, me bucko. the hour to learn. be off in th' projection room to watch a jolly barnacle-covered instructional movie !"));
+        m_missions.Add(new Mission("Screen",0,"Focus, me bucko. the hour to learn. be off in th' projection room to watch a jolly barnacle-covered instructional movie !"));
         m_missions.Add(new Mission("BubblGum","Engine_Low","Oww, thar's a crack in t' engine room, take a chewin' gum 'n fix it !"));
         m_missions.Add(new Mission("Power",0,"Some nasty creatures be hangin' around out thar. Switch off th' power 'o th' submarine, quick !"));
 
@@ -93,7 +93,12 @@ public class IA : MonoBehaviour
 	void Update ()
     {
         _currMission.UpdateMission();
-
+        if(_currMission.isEllapsed())
+        {
+            m_missions.RemoveAt(0);
+            _currMission = m_missions[0];
+            _currMission.StartMission();
+        }
         //if (Input.GetKeyUp(KeyCode.Return))
         //{
         //    Debug.Log(m_missions.Count);
