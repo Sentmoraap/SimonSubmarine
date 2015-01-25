@@ -20,6 +20,7 @@ public class Door : ActionObject {
     private Timer m_timer;
     private bool m_isLocking;
     private bool m_ignoreUp;
+    private AudioSource m_audioSource;
 
 #endregion
 
@@ -49,6 +50,7 @@ public class Door : ActionObject {
         m_timer = new Timer();
         m_isLocking = false;
         m_ignoreUp = false;
+        m_audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     public override void Update()
@@ -98,12 +100,14 @@ public class Door : ActionObject {
                 m_doorState = DoorState.Closed;
                 _anim.SetTrigger("Close");
                 m_isLocking = false;
+                m_audioSource.Play();
                 break;
 
 
             case DoorState.Closed:
                 m_doorState = DoorState.Open;
                 _anim.SetTrigger("Open");
+                m_audioSource.Play();
                 break;
 
         }
