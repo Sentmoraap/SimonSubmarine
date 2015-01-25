@@ -46,6 +46,7 @@ public class Room : MonoBehaviour
         set
         { 
             m_isVisible = value;
+            if (m_cachePlane == null) Start();
             Vector3 pos = m_cachePlane.localPosition;
             pos.y=value ? 0 : ROOM_HEIGHT;
             m_cachePlane.localPosition = pos;
