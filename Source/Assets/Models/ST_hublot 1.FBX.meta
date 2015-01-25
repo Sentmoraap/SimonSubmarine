@@ -1,0 +1,132 @@
+fileFormatVersion: 2
+guid: a877c14ae8027ab419817324f60157c6
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: __coutille
+    100002: __coutille001
+    100004: __coutille002
+    100006: bouer
+    100008: Box001
+    100010: Box002
+    100012: Box003
+    100014: Box004
+    100016: cWood_box
+    100018: gum
+    100020: Mooobox
+    100022: //RootNode
+    100024: wheel_porte
+    100026: Wood_box_family
+    100028: Wood_crate
+    400000: __coutille
+    400002: __coutille001
+    400004: __coutille002
+    400006: bouer
+    400008: Box001
+    400010: Box002
+    400012: Box003
+    400014: Box004
+    400016: cWood_box
+    400018: gum
+    400020: Mooobox
+    400022: //RootNode
+    400024: wheel_porte
+    400026: Wood_box_family
+    400028: Wood_crate
+    2300000: __coutille
+    2300002: __coutille001
+    2300004: __coutille002
+    2300006: bouer
+    2300008: Box001
+    2300010: Box002
+    2300012: Box003
+    2300014: Box004
+    2300016: cWood_box
+    2300018: gum
+    2300020: Mooobox
+    2300022: wheel_porte
+    2300024: Wood_box_family
+    2300026: Wood_crate
+    3300000: __coutille
+    3300002: __coutille001
+    3300004: __coutille002
+    3300006: bouer
+    3300008: Box001
+    3300010: Box002
+    3300012: Box003
+    3300014: Box004
+    3300016: cWood_box
+    3300018: gum
+    3300020: Mooobox
+    3300022: wheel_porte
+    3300024: Wood_box_family
+    3300026: Wood_crate
+    4300000: Mooobox
+    4300002: bouer
+    4300004: Box001
+    4300006: Box002
+    4300008: gum
+    4300010: Box003
+    4300012: Box004
+    4300014: wheel_porte
+    4300016: __coutille
+    4300018: __coutille001
+    4300020: __coutille002
+    4300022: Wood_box_family
+    4300024: cWood_box
+    4300026: Wood_crate
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
