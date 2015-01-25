@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
 
     public float _actionOffset;
     public float _actionRange = 3;
+    public Animator _anim;
 
 	private int m_currentLifePoint;
 
@@ -61,9 +62,14 @@ public class Character : MonoBehaviour
     void FixedUpdate()
     {
         UpdateMoveSpeed();
-        if(HorizontalValue != 0f || VerticalValue != 0f)
+        if (HorizontalValue != 0f || VerticalValue != 0f)
         {
+            _anim.SetBool("Walk", true);
             ApplyMove(MoveSpeed);
+        }
+        else
+        {
+            _anim.SetBool("Walk", false);
         }
     }
 
@@ -99,6 +105,7 @@ public class Character : MonoBehaviour
         var direction = new Vector3(HorizontalValue, 0f, VerticalValue).normalized;
 		transform.position += direction * moveSpeed;
 		transform.rotation = Quaternion.Euler(new Vector3(0f, (Mathf.Atan2(-VerticalValue, HorizontalValue) * 180 / Mathf.PI), 0f));
+        rigidbody.angularVelocity = Vector3.zero;
     }
 
     void ActionDown()
@@ -113,6 +120,7 @@ public class Character : MonoBehaviour
     {
         if(m_objects.Count > 0)
         {
+            m_objects[0].IsActivated = m_objects[0].IsActivated ? false : true;
             m_objects[0].activateActionUp();
         }
     }
