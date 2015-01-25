@@ -27,6 +27,7 @@ public class Character : MonoBehaviour
     public float _actionOffset;
     public float _actionRange = 3;
     public Animator _anim;
+    public static Character _instance;
 
 	private float m_health=1;// in [0;1]
     private float m_oxygen=1;// in [0;1]
@@ -65,6 +66,8 @@ public class Character : MonoBehaviour
 		set { m_verticalValue = value; }
 	}
 
+    public float Health { get { return m_health; } }
+
 #endregion
 
 #region Mono Functions
@@ -81,6 +84,7 @@ public class Character : MonoBehaviour
         m_footStepsSound = Resources.Load<AudioClip>("Sounds/Sounds/Footsteps");
         m_audioSource = gameObject.GetComponent<AudioSource>();
         m_audioSource.clip = m_footStepsSound;
+        _instance = this;
 	}
 
 	void Update()

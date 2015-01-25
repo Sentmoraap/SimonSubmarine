@@ -38,7 +38,8 @@ public class Mission
     #endregion
 
     #region publicAttributes
-    public float _timing;
+    public float _timing=60;
+    public string _dialog;
     #endregion
 
     #region privateAttributes
@@ -53,7 +54,8 @@ public class Mission
     #endregion
 
     #region MonoBehaviour
-    public Mission(string obj, string room)
+
+    public Mission(string obj, string room, string dialog="")
     {
         m_startTime = Time.time;
         m_positiveResults = new List<Result>();
@@ -62,9 +64,10 @@ public class Mission
         m_completeCondition._useObject = false;
         m_completeCondition._object = obj;
         m_completeCondition._room = room;
+        _dialog = dialog;
     }
 
-    public Mission(string obj)
+    public Mission(string obj, int dummy=0, string dialog="")
     {
         m_startTime = Time.time;
         m_positiveResults = new List<Result>();
@@ -72,6 +75,7 @@ public class Mission
         m_denyResults = new List<Result>();
         m_completeCondition._useObject = true;
         m_completeCondition._object = obj;
+        _dialog = dialog;
     }
 
     public void UpdateMission()
@@ -202,6 +206,12 @@ public class Mission
         {
             m_completed = true;
         }
+    }
+
+    public string getStringObjective()
+    {
+        if (m_completeCondition._useObject) return "Use " + m_completeCondition._object;
+        else return "Use " + m_completeCondition._object + " in " + m_completeCondition._room;
     }
     #endregion
 

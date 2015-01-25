@@ -101,11 +101,11 @@ public class UIManagerInGame : MonoBehaviour
 	}
 	void Update () {
         testprogress = Time.time;
-        UpdateGlobalTimeUI(50 - (int)testprogress);
-        UpdateMissionTimeUI(10 - (int)testprogress);
-        UpdateObjectifUI("Mission Obj");
-        UpdateLifeBar(1-testprogress/20);
-        UpdateDialogue("Current Mission");
+        UpdateGlobalTimeUI((int)Submarine._instance.TimeLeft);
+        UpdateMissionTimeUI((int)IA.Instance._currMission.getTimeLeft());
+        UpdateObjectifUI(IA.Instance._currMission.getStringObjective());
+        UpdateLifeBar(Character._instance.Health);
+        UpdateDialogue(IA.Instance._currMission._dialog);
         UpdateMiniPlayer(PlayerPos);
     }
     #endregion

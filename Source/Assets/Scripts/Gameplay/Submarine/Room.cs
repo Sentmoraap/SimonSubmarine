@@ -19,7 +19,7 @@ public class Room : MonoBehaviour
 
     private float m_health;
     
-    private float m_waterValue=1; // in [0;1]
+    public /*private*/ float m_waterValue=0; // in [0;1]
     private float m_heatValue=0; // in [0;1]
     private float m_electricityValue=0; // in [0;1]
 

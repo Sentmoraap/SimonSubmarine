@@ -13,8 +13,8 @@ public class MovieTextureAutoPlay : ActionObject {
     {
 
         m_current = 1;
-        m_mt = (MovieTexture)renderer.material.mainTexture;
-        m_mt.Play();
+        //m_mt = (MovieTexture)renderer.material.mainTexture;
+        //m_mt.Play();
 
 	}
 
