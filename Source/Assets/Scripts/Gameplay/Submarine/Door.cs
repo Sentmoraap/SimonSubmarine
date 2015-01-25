@@ -90,16 +90,12 @@ public class Door : ActionObject {
             return;
         }
 
-
-        Debug.Log(m_doorState);
-
         base.activateActionUp();
 
         switch (m_doorState)
         {
             case DoorState.Open:
                 m_doorState = DoorState.Closed;
-                Debug.Log(name + "close");
                 _anim.SetTrigger("Close");
                 m_isLocking = false;
                 break;
@@ -107,7 +103,6 @@ public class Door : ActionObject {
 
             case DoorState.Closed:
                 m_doorState = DoorState.Open;
-                Debug.Log(name + "open");
                 _anim.SetTrigger("Open");
                 break;
 
@@ -119,20 +114,16 @@ public class Door : ActionObject {
         if (_alwaysOpen && m_doorState==DoorState.Open) return;
         base.activateActionDown();
 
-        Debug.Log(m_doorState);
-
         switch (m_doorState)
         {
 
             case DoorState.Closed:
                 _anim.SetTrigger("Lock");
-                Debug.Log(name + "lock");
                 m_timer.Reset(_lockDelay);
                 m_isLocking = true;
                 break;
 
             case DoorState.Locked :
-                Debug.Log(name + "unlock");
                 _anim.SetTrigger("Unlock");
                 m_isLocking = true;
                 break;

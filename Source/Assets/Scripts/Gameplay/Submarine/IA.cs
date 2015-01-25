@@ -56,7 +56,7 @@ public class IA : MonoBehaviour
 
         m_missions = new List<Mission>();
         //level 1 missions
-        m_missions.Add(new Mission("Box"));
+        m_missions.Add(new Mission("MonkeyWrench", "Power"));
         m_missions.Add(new Mission("AirLock"));
         m_missions.Add(new Mission("Pump"));
         m_missions.Add(new Mission("Movie"));
@@ -81,6 +81,7 @@ public class IA : MonoBehaviour
         m_missions.Add(new Mission("?", "?"));
 
         _currMission = m_missions[0];
+        _currMission._timing = 10;
 
     }
 
@@ -90,7 +91,7 @@ public class IA : MonoBehaviour
 	
 	void Update ()
     {
-        //_currMission.UpdateMission();
+        _currMission.UpdateMission();
 
         //if (Input.GetKeyUp(KeyCode.Return))
         //{

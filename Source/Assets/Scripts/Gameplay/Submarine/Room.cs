@@ -7,6 +7,7 @@ public class Room : MonoBehaviour
 
 #region constants
     private const float ROOM_HEIGHT=10f;
+    private const float CRACK_FILL_SPEED = 0.5f;
 #endregion
 
 #region members
@@ -27,6 +28,7 @@ public class Room : MonoBehaviour
 
     private bool m_isVisible;
 
+    private bool m_hasCrack;
 #endregion 
 
 #region Properties
@@ -46,10 +48,17 @@ public class Room : MonoBehaviour
         set
         { 
             m_isVisible = value;
+            if (m_cachePlane == null) Start();
             Vector3 pos = m_cachePlane.localPosition;
             pos.y=value ? 0 : ROOM_HEIGHT;
             m_cachePlane.localPosition = pos;
         }
+    }
+
+    public bool HasCrack
+    {
+        get { return m_hasCrack;}
+        set { m_hasCrack = value; }
     }
 
 #endregion 
@@ -62,7 +71,7 @@ public class Room : MonoBehaviour
         m_cachePlane = transform.Find("Cache");
 	}
 	
-	void Update ()
+	public void _update ()
     {
         UpdateWaterValue();
         UpdateHeatValue();
@@ -88,6 +97,10 @@ public class Room : MonoBehaviour
             if(otherRoom==this) otherRoom=d._rooms[1];
             propagate(d.DoorState, ref m_waterValue, ref otherRoom.m_waterValue, otherRoom._area, d.WaterLeak);
             
+        }
+        if(m_hasCrack)
+        {
+            m_waterValue = Mathf.Max(1, m_waterValue + CRACK_FILL_SPEED / _area);
         }
         Vector3 planePos=m_waterPlane.localPosition;
         planePos.y = Mathf.Lerp(0, ROOM_HEIGHT, m_waterValue);
