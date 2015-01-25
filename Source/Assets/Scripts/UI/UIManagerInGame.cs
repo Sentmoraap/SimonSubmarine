@@ -11,6 +11,7 @@ public class UIManagerInGame : MonoBehaviour
     public Text GlobalTimeTxt;
     public Text MissionTimeTxt;
     public Text PrincipalMissionTxt;
+    public Text DialogueTxt;
     public Image LifeProgressBarImg;
 
     public Transform PlayerPos;
@@ -67,6 +68,10 @@ public class UIManagerInGame : MonoBehaviour
         }
         
     }
+    void UpdateDialogue(string dialogue)
+    {
+        DialogueTxt.text = dialogue;
+    }
 
     void UpdateObjectifUI(string _Objectif)
     {
@@ -100,6 +105,7 @@ public class UIManagerInGame : MonoBehaviour
         UpdateMissionTimeUI(10 - (int)testprogress);
         UpdateObjectifUI("Mission Obj");
         UpdateLifeBar(1-testprogress/20);
+        UpdateDialogue("Current Mission");
         UpdateMiniPlayer(PlayerPos);
     }
     #endregion
