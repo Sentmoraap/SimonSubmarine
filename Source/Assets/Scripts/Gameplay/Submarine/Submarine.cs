@@ -8,7 +8,7 @@ public class Submarine : MonoBehaviour
     private const float EVENT_PERIOD=120;
     private const float EVENT_DURATION = 10; 
     #endregion
-
+    
     #region publicTYpes
     public enum EventState
     {
@@ -22,6 +22,7 @@ public class Submarine : MonoBehaviour
     #region publicAttributes
     // The rooms must be ordered in unlock order
     public List<Room> _rooms;
+    public static Submarine _instance;
     #endregion
 
     #region properties
@@ -73,6 +74,7 @@ public class Submarine : MonoBehaviour
         m_timeLimit = 600;
         for (int i = 0; i < _rooms.Count; i++) _rooms[i]._id = i;
         UnlockNextPhase();
+        _instance = this;
     }
 
     public void Update()
@@ -94,7 +96,8 @@ public class Submarine : MonoBehaviour
     #region methods
     public void UpdateHealth()
     {
-        //TODO when we have rooms
+        m_health = 0;
+        foreach (Room r in _rooms) m_health+=r.Health/_rooms.Count;
     }
 
     // Can be used with a negative number to lock rooms

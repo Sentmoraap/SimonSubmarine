@@ -19,7 +19,7 @@ public class Room : MonoBehaviour
 
     private float m_health;
     
-    private float m_waterValue=0; // in [0;1]
+    private float m_waterValue=1; // in [0;1]
     private float m_heatValue=0; // in [0;1]
     private float m_electricityValue=0; // in [0;1]
 
@@ -35,7 +35,7 @@ public class Room : MonoBehaviour
 
     public float Health { get { return m_health; } set { m_health = value; } }
 
-    public float WaterValue { get { return m_waterValue; } }
+    public float WaterValue { get { return m_waterValue; } set { m_waterValue = value; } }
 
     public float HeatValue { get { return m_heatValue; } }
     
