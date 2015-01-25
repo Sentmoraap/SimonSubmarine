@@ -66,9 +66,9 @@ public class Submarine : MonoBehaviour
     {
         m_phaseRoomUnlocks=new List<int>();
         m_phaseRoomUnlocks.Add(0);
-        m_phaseRoomUnlocks.Add(4);
-        m_phaseRoomUnlocks.Add(6);
-        m_phaseRoomUnlocks.Add(10);
+        m_phaseRoomUnlocks.Add(5);
+        m_phaseRoomUnlocks.Add(7);
+        m_phaseRoomUnlocks.Add(12);
         m_startTime = Time.time;
         m_timeLimit = 600;
         for (int i = 0; i < _rooms.Count; i++) _rooms[i]._id = i;

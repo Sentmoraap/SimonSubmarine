@@ -4,21 +4,41 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
+    #region constants
+    private const float BASE_MOVE_SPEED = 0.25f;
 
-#region members
+    private const float SLOWDOWN_WATER_LEVEL = 0.1f;
+    private const float SLOWDOWN_SPEED_MULT = 0.5f;
+    private const float DROWN_WATER_LEVEL = 0.5f;
+    private const float OXYGEN_DECREASE_RATE = 0.3f; // /s
+    private const float OXYGEN_INCREASE_RATE = 1; // /s
+    private const float HEALTH_DROWN_DECREASE_RATE = 0.1f; // /s
+    private const float STEAM_HURT_THRESHOLD = 1f;
+    private const float STEAM_HURT_RATE = 0.1f; // /s
+    private const float ELECTRICITY_HURT_DIST = 5;
+    private const float ELECTRICITY_THRESHOLD = 1;
+    private const float ELECTRICITY_WATER_MULT = 50; // value multiplied by water level and added to electricity value
+    private const float ELECTRICITY_HURT_DAMAGE = 0.2f;
+
+    #endregion
+
+    #region members
 
     public float _actionOffset;
     public float _actionRange = 3;
     public Animator _anim;
 
-	private int m_currentLifePoint;
+	private float m_health=1;// in [0;1]
+    private float m_oxygen=1;// in [0;1]
+    private float m_distLastElectroshock = 0;
 
     private float m_moveSpeed = 0.25f;
     private float m_horizontalValue;
 	private float m_verticalValue;
 
+    private bool m_waterSlowdown = false;
     private List<ActionObject> m_objects;
-    private string m_currRoom;
+    private Room m_currRoom;
 
 #endregion
 
@@ -58,6 +78,49 @@ public class Character : MonoBehaviour
 	void Update()
 	{
         UpdateCloseActionObject();
+
+        // Check drowning and water slowdown
+        float waterLevel = m_currRoom.WaterValue;
+        if(waterLevel>=DROWN_WATER_LEVEL)
+        {
+            if(m_oxygen<=0)
+            {
+                m_health = Mathf.Max(0, m_health - HEALTH_DROWN_DECREASE_RATE * Time.deltaTime);
+            }
+            else
+            {
+                m_oxygen = Mathf.Max(m_oxygen-OXYGEN_DECREASE_RATE * Time.deltaTime,0);
+            }
+        }
+        else
+        {
+            m_oxygen = Mathf.Min(m_oxygen+OXYGEN_INCREASE_RATE * Time.deltaTime,1);
+        }
+        m_waterSlowdown = waterLevel >= SLOWDOWN_WATER_LEVEL;
+
+        // Check steam
+        float heatLevel = m_currRoom.HeatValue;
+        if(heatLevel>=STEAM_HURT_THRESHOLD)
+        {
+            m_health = Mathf.Max(0, m_health - STEAM_HURT_RATE * Time.deltaTime);
+        }
+
+        // Check electricity
+        float electricityLevel = m_currRoom.ElectricityValue;
+        electricityLevel += electricityLevel * waterLevel * ELECTRICITY_WATER_MULT;
+        if(electricityLevel>ELECTRICITY_THRESHOLD)
+        {
+            if(m_distLastElectroshock>=ELECTRICITY_HURT_DIST)
+            {
+                m_distLastElectroshock -= ELECTRICITY_HURT_DIST;
+                m_health = Mathf.Max(0, m_health - ELECTRICITY_HURT_DAMAGE);
+                // TODO : hurt animation and stun
+            }
+        }
+        else
+        {
+            m_distLastElectroshock = 0;
+        }
 	}
 
     void FixedUpdate()
@@ -73,6 +136,10 @@ public class Character : MonoBehaviour
             _anim.SetBool("Walk", false);
         }
 
+        if(Input.GetKeyUp(KeyCode.Return))
+        {
+            Debug.Log(m_currRoom.gameObject.name);
+        }
     }
 
 #endregion 
@@ -81,7 +148,8 @@ public class Character : MonoBehaviour
 
     public void UpdateMoveSpeed()
     {
-        //TODO calculate move speed considering environment
+        m_moveSpeed = BASE_MOVE_SPEED;
+        if (m_waterSlowdown) m_moveSpeed *= SLOWDOWN_SPEED_MULT;
     }
 
     public void UpdateCloseActionObject()
@@ -108,6 +176,7 @@ public class Character : MonoBehaviour
 		transform.position += direction * moveSpeed;
 		transform.rotation = Quaternion.Euler(new Vector3(0f, (Mathf.Atan2(-VerticalValue, HorizontalValue) * 180 / Mathf.PI), 0f));
         rigidbody.angularVelocity = Vector3.zero;
+        m_distLastElectroshock += moveSpeed;
     }
 
     void ActionDown()
@@ -136,7 +205,7 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag("Room"))
         {
-            m_currRoom = other.name;
+            m_currRoom = other.gameObject.GetComponent<Room>();
         }
     }
 

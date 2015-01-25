@@ -9,10 +9,13 @@ public class Door : ActionObject {
     public Room[] _rooms;
     public float _lockDelay;
     public Animator _anim;
+    public bool _alwaysOpen=false; // Fake door always open to link rooms
 
     private DoorState m_doorState;
-    private float m_pressure=0.1f; // Heat leak in (unity unit)²*(watervalue unit)/seconds
-    private float m_leak=0.1f;   // Water leak in (unity unit)²*(watervalue unit)/seconds
+    private float m_pressure;
+    private float m_heatLeak=1f; // Heat leak in (unity unit)²*(watervalue unit)/seconds
+    private float m_waterLeak=1f;   // Water leak in (unity unit)²*(watervalue unit)/seconds
+    private float m_electricityLeak = 1f; // Same thing with electricity
 
     private Timer m_timer;
     private bool m_isLocking;
@@ -26,7 +29,11 @@ public class Door : ActionObject {
 
     public float Pressure { get { return m_pressure; } }
 
-    public float Leak { get { return m_leak; } }
+    public float HeatLeak { get { return m_heatLeak; } }
+    
+    public float WaterLeak { get { return m_waterLeak; } }
+    
+    public float ElectricityLeak { get { return m_electricityLeak; } }
 
 
 #endregion
@@ -38,6 +45,7 @@ public class Door : ActionObject {
         base.Start();
 
         DoorState = DoorState.Locked;
+        if (_alwaysOpen) { m_doorState = DoorState.Closed; activateActionUp(); }
         m_timer = new Timer();
         m_isLocking = false;
         m_ignoreUp = false;
@@ -75,6 +83,7 @@ public class Door : ActionObject {
 
     public override void activateActionUp()
     {
+        if (_alwaysOpen && m_doorState==DoorState.Open) return;
         if(m_ignoreUp)
         {
             m_ignoreUp = false;
@@ -102,6 +111,7 @@ public class Door : ActionObject {
 
     public override void activateActionDown()
     {
+        if (_alwaysOpen && m_doorState==DoorState.Open) return;
         base.activateActionDown();
 
         switch (m_doorState)
