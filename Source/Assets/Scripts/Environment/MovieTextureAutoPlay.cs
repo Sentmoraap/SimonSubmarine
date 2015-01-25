@@ -33,7 +33,8 @@ public class MovieTextureAutoPlay : ActionObject {
 
         renderer.material = _movietextures[m_current];
         m_mt = (MovieTexture)renderer.material.mainTexture;
-        m_mt.Play();
+		if(m_mt != null)
+	        m_mt.Play();
         
     }
 
