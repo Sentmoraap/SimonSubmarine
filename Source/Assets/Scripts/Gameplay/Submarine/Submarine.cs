@@ -82,12 +82,12 @@ public class Submarine : MonoBehaviour
         if(isInEvent && eventState==EventState.NO_EVENT)
         {
             eventState = (EventState) Random.Range(1, (int)EventState.MAX_EVENT + 1);
-
-            // TODO : do actual things instead of just printing
-            if (eventState == EventState.VOLCANO) Debug.Log("Underwater volcano eruption");
-            if (eventState == EventState.KRAKEN) Debug.Log("Kraken");
+            Room r = _rooms[Random.Range(0, _rooms.Count)];
+            r.HasCrack = true;
         }
         if (!isInEvent) eventState = EventState.NO_EVENT;
+
+        foreach (Room r in _rooms) r._update();
     }
     #endregion
 
