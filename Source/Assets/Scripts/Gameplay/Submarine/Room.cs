@@ -20,6 +20,7 @@ public class Room : MonoBehaviour
     
     private float m_waterValue=0; // in [0;1]
     private float m_heatValue=0; // in [0;1]
+    private float m_electricityValue=0; // in [0;1]
 
     private Transform m_waterPlane;
     private Transform m_cachePlane;
@@ -35,6 +36,8 @@ public class Room : MonoBehaviour
     public float WaterValue { get { return m_waterValue; } }
 
     public float HeatValue { get { return m_heatValue; } }
+    
+    public float ElectricityValue { get { return m_electricityValue; } }
 
     public bool IsVisible
     { 
@@ -63,6 +66,7 @@ public class Room : MonoBehaviour
     {
         UpdateWaterValue();
         UpdateHeatValue();
+        UpdateElectricityValue();
         UpdateHealth();
 	}
 
@@ -72,7 +76,7 @@ public class Room : MonoBehaviour
 
     private void UpdateHealth()
     {
-        m_health = (1 - m_waterValue) * (1 - m_heatValue);
+        m_health = (1f - m_waterValue) * (1f - m_heatValue) * (1f - m_electricityValue);
     }
 
     private void UpdateWaterValue()
@@ -97,6 +101,17 @@ public class Room : MonoBehaviour
             Room otherRoom=d._rooms[0];
             if(otherRoom==this) otherRoom=d._rooms[1];
             propagate(d.DoorState, ref m_heatValue, ref otherRoom.m_heatValue, otherRoom._area, d.HeatLeak);
+        }
+        //TODO : graphic effect
+    }
+
+    private void UpdateElectricityValue()
+    {
+        foreach(Door d in _doors)
+        {
+            Room otherRoom=d._rooms[0];
+            if(otherRoom==this) otherRoom=d._rooms[1];
+            propagate(d.DoorState, ref m_electricityValue, ref otherRoom.m_electricityValue, otherRoom._area, d.ElectricityLeak);
         }
         //TODO : graphic effect
     }

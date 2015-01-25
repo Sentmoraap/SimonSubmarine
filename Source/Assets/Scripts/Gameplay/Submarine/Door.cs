@@ -13,8 +13,9 @@ public class Door : ActionObject {
 
     private DoorState m_doorState;
     private float m_pressure;
-    private float m_heatLeak=0.1f; // Heat leak in (unity unit)²*(watervalue unit)/seconds
+    private float m_heatLeak=1f; // Heat leak in (unity unit)²*(watervalue unit)/seconds
     private float m_waterLeak=1f;   // Water leak in (unity unit)²*(watervalue unit)/seconds
+    private float m_electricityLeak = 1f; // Same thing with electricity
 
     private Timer m_timer;
     private bool m_isLocking;
@@ -31,6 +32,8 @@ public class Door : ActionObject {
     public float HeatLeak { get { return m_heatLeak; } }
     
     public float WaterLeak { get { return m_waterLeak; } }
+    
+    public float ElectricityLeak { get { return m_electricityLeak; } }
 
 
 #endregion
