@@ -44,6 +44,7 @@ public abstract class ActionObject : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        //TODO changer par une verification avce la room connue du joueur et une activation.
         if (other.CompareTag("Room"))
         {
             IA.Instance._currMission.checkIfCompleted(name, other.name);

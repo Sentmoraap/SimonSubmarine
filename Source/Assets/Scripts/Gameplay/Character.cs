@@ -18,6 +18,7 @@ public class Character : MonoBehaviour
 	private float m_verticalValue;
 
     private List<ActionObject> m_objects;
+    private string m_currRoom;
 
 #endregion
 
@@ -70,6 +71,11 @@ public class Character : MonoBehaviour
         else
         {
             _anim.SetBool("Walk", false);
+        }
+
+        if(Input.GetKeyUp(KeyCode.Return))
+        {
+            Debug.Log(m_currRoom);
         }
     }
 
@@ -127,6 +133,15 @@ public class Character : MonoBehaviour
 
             m_objects[0].IsActivated = m_objects[0].IsActivated ? false : true;
             m_objects[0].activateActionUp();
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Room"))
+        {
+            Debug.Log("Player did enter room : " + other.name);
+            m_currRoom = other.name;
         }
     }
 

@@ -56,6 +56,7 @@ public class IA : MonoBehaviour
 
         m_missions = new List<Mission>();
         //level 1 missions
+        m_missions.Add(new Mission("Box"));
         m_missions.Add(new Mission("AirLock"));
         m_missions.Add(new Mission("Pump"));
         m_missions.Add(new Mission("Movie"));
@@ -79,6 +80,8 @@ public class IA : MonoBehaviour
 
         m_missions.Add(new Mission("?", "?"));
 
+        _currMission = m_missions[0];
+
     }
 
 #endregion
@@ -89,10 +92,10 @@ public class IA : MonoBehaviour
     {
         //_currMission.UpdateMission();
 
-        if (Input.GetKeyUp(KeyCode.Return))
-        {
-            Debug.Log(m_missions.Count);
-        }
+        //if (Input.GetKeyUp(KeyCode.Return))
+        //{
+        //    Debug.Log(m_missions.Count);
+        //}
     }
 
 #endregion
