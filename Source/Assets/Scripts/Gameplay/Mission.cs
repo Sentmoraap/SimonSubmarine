@@ -59,7 +59,7 @@ public class Mission
         m_positiveResults = new List<Result>();
         m_negativeResults = new List<Result>();
         m_denyResults = new List<Result>();
-        m_completeCondition._useObject = true;
+        m_completeCondition._useObject = false;
         m_completeCondition._object = obj;
         m_completeCondition._room = room;
     }
@@ -70,7 +70,7 @@ public class Mission
         m_positiveResults = new List<Result>();
         m_negativeResults = new List<Result>();
         m_denyResults = new List<Result>();
-        m_completeCondition._useObject = false;
+        m_completeCondition._useObject = true;
         m_completeCondition._object = obj;
     }
 
@@ -85,6 +85,7 @@ public class Mission
             }
             else if(m_completed)
             {
+                Debug.Log("Complete");
                 m_finished = true;
                 applyPositiveResults();
             }

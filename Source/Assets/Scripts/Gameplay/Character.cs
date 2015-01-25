@@ -73,10 +73,6 @@ public class Character : MonoBehaviour
             _anim.SetBool("Walk", false);
         }
 
-        if(Input.GetKeyUp(KeyCode.Return))
-        {
-            Debug.Log(m_currRoom);
-        }
     }
 
 #endregion 

@@ -25,9 +25,12 @@ public abstract class ActionObject : MonoBehaviour
 
     #endregion
 
-    #region privateAttributes
-        bool m_isActivated;
-    #endregion
+#region privateAttributes
+
+    private bool m_isActivated;
+    private string m_room;
+
+#endregion
     
     #region MonoBehaviour
     public virtual void Start ()
@@ -42,12 +45,11 @@ public abstract class ActionObject : MonoBehaviour
         if(m_isActivated) doActivatedStuff(); else doDisactivatedStuff();
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        //TODO changer par une verification avce la room connue du joueur et une activation.
         if (other.CompareTag("Room"))
         {
-            IA.Instance._currMission.checkIfCompleted(name, other.name);
+            m_room = other.name;
         }
     }
 
@@ -78,6 +80,7 @@ public abstract class ActionObject : MonoBehaviour
         if (IA.Instance._currMission != null)
         {
             IA.Instance._currMission.checkIfCompleted(name);
+            IA.Instance._currMission.checkIfCompleted(name, m_room);
         }
     }
 
@@ -89,6 +92,7 @@ public abstract class ActionObject : MonoBehaviour
         if(IA.Instance._currMission != null)
         {
             IA.Instance._currMission.checkIfCompleted(name);
+            IA.Instance._currMission.checkIfCompleted(name, m_room);
         }
     }
 
