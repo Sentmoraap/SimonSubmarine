@@ -36,7 +36,7 @@ public class MainMenuUI : MonoBehaviour
     }
     public void test1()
     {
-        Debug.Log("clicked1");
+        Application.LoadLevel("TestMathilda");
     }
 
     public void test2()

@@ -71,7 +71,7 @@ public class Submarine : MonoBehaviour
         m_phaseRoomUnlocks.Add(7);
         m_phaseRoomUnlocks.Add(12);
         m_startTime = Time.time;
-        m_timeLimit = 100;
+        m_timeLimit = 300;
         for (int i = 0; i < _rooms.Count; i++) _rooms[i]._id = i;
         UnlockNextPhase();
         UnlockNextPhase();
