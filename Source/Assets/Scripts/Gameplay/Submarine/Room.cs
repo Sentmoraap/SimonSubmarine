@@ -6,20 +6,21 @@ public class Room : MonoBehaviour
 {
 
 #region constants
-    private const float ROOM_LOW_LEVEL = 0.49f;
-    private const float ROOM_HIGH_LEVEL = 4.8f;
+    private const float ROOM_HEIGHT=10f;
 #endregion
 
 #region members
 
-    public int _floor;
     public int _id;
     public List<Door> _doors;
     public float _area; // _area in unity unit²
+    public int id;
+
     private float m_health;
     
     private float m_waterValue=0; // in [0;1]
     private float m_heatValue=0; // in [0;1]
+    private float m_electricityValue=0; // in [0;1]
 
     private Transform m_waterPlane;
     private Transform m_cachePlane;
@@ -35,6 +36,8 @@ public class Room : MonoBehaviour
     public float WaterValue { get { return m_waterValue; } }
 
     public float HeatValue { get { return m_heatValue; } }
+    
+    public float ElectricityValue { get { return m_electricityValue; } }
 
     public bool IsVisible
     { 
@@ -43,10 +46,9 @@ public class Room : MonoBehaviour
         set
         { 
             m_isVisible = value;
-            Vector3 pos = m_cachePlane.position;
-            pos.y=value ? ROOM_LOW_LEVEL : ROOM_HIGH_LEVEL;
-            m_cachePlane.position = pos;
-            //TODO active a black plane when not visible
+            Vector3 pos = m_cachePlane.localPosition;
+            pos.y=value ? 0 : ROOM_HEIGHT;
+            m_cachePlane.localPosition = pos;
         }
     }
 
@@ -64,6 +66,7 @@ public class Room : MonoBehaviour
     {
         UpdateWaterValue();
         UpdateHeatValue();
+        UpdateElectricityValue();
         UpdateHealth();
 	}
 
@@ -73,7 +76,7 @@ public class Room : MonoBehaviour
 
     private void UpdateHealth()
     {
-        m_health = (1 - m_waterValue) * (1 - m_heatValue);
+        m_health = (1f - m_waterValue) * (1f - m_heatValue) * (1f - m_electricityValue);
     }
 
     private void UpdateWaterValue()
@@ -83,12 +86,12 @@ public class Room : MonoBehaviour
         {
             Room otherRoom=d._rooms[0];
             if(otherRoom==this) otherRoom=d._rooms[1];
-            propagate(d.DoorState, ref m_waterValue, ref otherRoom.m_waterValue, otherRoom._area, d.Leak);
+            propagate(d.DoorState, ref m_waterValue, ref otherRoom.m_waterValue, otherRoom._area, d.WaterLeak);
             
         }
-        Vector3 planePos=m_waterPlane.position;
-        planePos.y = Mathf.Lerp(ROOM_LOW_LEVEL, ROOM_HIGH_LEVEL, m_waterValue);
-        m_waterPlane.position = planePos;
+        Vector3 planePos=m_waterPlane.localPosition;
+        planePos.y = Mathf.Lerp(0, ROOM_HEIGHT, m_waterValue);
+        m_waterPlane.localPosition = planePos;
     }
 
     private void UpdateHeatValue()
@@ -97,7 +100,18 @@ public class Room : MonoBehaviour
         {
             Room otherRoom=d._rooms[0];
             if(otherRoom==this) otherRoom=d._rooms[1];
-            propagate(d.DoorState, ref m_heatValue, ref otherRoom.m_heatValue, otherRoom._area, d.Pressure);
+            propagate(d.DoorState, ref m_heatValue, ref otherRoom.m_heatValue, otherRoom._area, d.HeatLeak);
+        }
+        //TODO : graphic effect
+    }
+
+    private void UpdateElectricityValue()
+    {
+        foreach(Door d in _doors)
+        {
+            Room otherRoom=d._rooms[0];
+            if(otherRoom==this) otherRoom=d._rooms[1];
+            propagate(d.DoorState, ref m_electricityValue, ref otherRoom.m_electricityValue, otherRoom._area, d.ElectricityLeak);
         }
         //TODO : graphic effect
     }
