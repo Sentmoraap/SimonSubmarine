@@ -40,6 +40,9 @@ public class Character : MonoBehaviour
     private List<ActionObject> m_objects;
     private Room m_currRoom;
 
+    private AudioSource m_audioSource;
+    private AudioClip m_electricitySound;
+    private AudioClip m_footStepsSound;
 #endregion
 
 #region Properties
@@ -73,6 +76,11 @@ public class Character : MonoBehaviour
 		KeyBinder.Instance.DefineActions("Horizontal", new AxisActionConfig(KeyType.Movement, 0, value => { HorizontalValue = value; } ));
 		KeyBinder.Instance.DefineActions("Vertical", new AxisActionConfig(KeyType.Movement, 0, value => { VerticalValue = value; } ));
         KeyBinder.Instance.DefineActions("ButtonA", new KeyActionConfig(KeyType.Action, 0, ActionDown, ActionUp));
+
+        m_electricitySound = Resources.Load<AudioClip>("Sounds/Sounds/Electricity");
+        m_footStepsSound = Resources.Load<AudioClip>("Sounds/Sounds/Footsteps");
+        m_audioSource = gameObject.GetComponent<AudioSource>();
+        m_audioSource.clip = m_footStepsSound;
 	}
 
 	void Update()
@@ -114,6 +122,7 @@ public class Character : MonoBehaviour
             {
                 m_distLastElectroshock -= ELECTRICITY_HURT_DIST;
                 m_health = Mathf.Max(0, m_health - ELECTRICITY_HURT_DAMAGE);
+                m_audioSource.PlayOneShot(m_electricitySound);
                 // TODO : hurt animation and stun
             }
         }
@@ -121,6 +130,11 @@ public class Character : MonoBehaviour
         {
             m_distLastElectroshock = 0;
         }
+
+        // Footsteps sound
+        bool walking = m_horizontalValue != 0 || m_verticalValue != 0;
+        if(walking && !m_audioSource.isPlaying) m_audioSource.Play();
+        if (!walking && m_audioSource.isPlaying) m_audioSource.Stop();
 	}
 
     void FixedUpdate()
