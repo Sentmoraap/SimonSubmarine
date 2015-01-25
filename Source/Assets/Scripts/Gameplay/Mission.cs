@@ -38,7 +38,7 @@ public class Mission
     #endregion
 
     #region publicAttributes
-    public float _timing=60;
+    public float _timing=20;
     public string _dialog;
     #endregion
 
@@ -76,6 +76,11 @@ public class Mission
         m_completeCondition._useObject = true;
         m_completeCondition._object = obj;
         _dialog = dialog;
+    }
+
+    public void StartMission()
+    {
+        m_startTime = Time.time;
     }
 
     public void UpdateMission()
@@ -140,7 +145,7 @@ public class Mission
 
     public bool isEllapsed()
     {
-        return m_startTime!=-1 && Time.time > m_startTime + _timing;
+        return (m_startTime!=-1 && Time.time > m_startTime + _timing) || m_finished;
     }
 
     public void Deny()
