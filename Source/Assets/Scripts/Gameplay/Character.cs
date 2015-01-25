@@ -140,7 +140,6 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag("Room"))
         {
-            Debug.Log("Player did enter room : " + other.name);
             m_currRoom = other.name;
         }
     }
