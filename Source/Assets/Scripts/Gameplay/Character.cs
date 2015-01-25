@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
-    #region constants
+#region constants
     private const float BASE_MOVE_SPEED = 0.25f;
 
     private const float SLOWDOWN_WATER_LEVEL = 0.1f;
@@ -20,9 +20,9 @@ public class Character : MonoBehaviour
     private const float ELECTRICITY_WATER_MULT = 50; // value multiplied by water level and added to electricity value
     private const float ELECTRICITY_HURT_DAMAGE = 0.2f;
 
-    #endregion
+#endregion
 
-    #region members
+#region members
 
     public float _actionOffset;
     public float _actionRange = 3;
@@ -149,7 +149,15 @@ public class Character : MonoBehaviour
     public void UpdateMoveSpeed()
     {
         m_moveSpeed = BASE_MOVE_SPEED;
-        if (m_waterSlowdown) m_moveSpeed *= SLOWDOWN_SPEED_MULT;
+        if (m_waterSlowdown)
+        {
+            _anim.SetBool("Water", true);
+            m_moveSpeed *= SLOWDOWN_SPEED_MULT;
+        }
+        else
+        {
+            _anim.SetBool("Water", false);
+        }
     }
 
     public void UpdateCloseActionObject()
