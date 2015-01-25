@@ -81,15 +81,18 @@ public class UIManagerInGame : MonoBehaviour
     void UpdateMiniPlayer(Transform player)
     {
        // MiniPlayer.position.Set(player.position.x * 10, player.position.z * 10, 0f);
-        miniCr.Set(player.position.x/100 , player.position.z/100 , 0f);
-        MiniPlayer.transform.localPosition = miniCr;
+        if (MiniPlayer != null)
+        {
+            miniCr.Set(player.position.x / 100, player.position.z / 100, 0f);
+            MiniPlayer.transform.localPosition = miniCr;
+        }
     }
 
     # endregion
 
     #region MonoBehaviour
     void Awake () {
-        DepthSort(UISorting);
+        //DepthSort(UISorting);
 	}
 	void Update () {
         testprogress = Time.time;
